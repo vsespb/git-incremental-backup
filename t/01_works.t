@@ -63,7 +63,7 @@ sub compare_repos
 		my $b_branch = shift @branch_b;
 		die "$a_branch eq $b_branch" unless $a_branch eq $b_branch;
 		my @a_log = get_log($a, $a_branch);
-		my @b_log = get_log($a, $a_branch);
+		my @b_log = get_log($b, $a_branch);
 		
 		die unless scalar @a_log == scalar @b_log;
 		for (1..scalar @a_log) {
