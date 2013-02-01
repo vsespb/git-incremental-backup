@@ -69,6 +69,7 @@ if ($command eq 'backup') {
 					# TODO: work-dir simply not work here
 					# http://stackoverflow.com/questions/11292057/git-windows-git-pull-cannot-be-used-without-a-working-tree 
 					cmd(qq{git --git-dir ${gitdir}.git pull $remote_name $_});
+					cmd(qq{git --git-dir ${gitdir}.git checkout $_});
 				}
 			};
 		}
