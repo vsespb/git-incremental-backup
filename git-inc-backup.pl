@@ -85,7 +85,7 @@ sub get_local_branches
 
 sub get_remote_branches
 {
-	map { /^\s*(.*)$/; $1 } cmd(qq{$git_command branch -r})
+	map { /^\s*(.*)$/; $1 } grep { ! m!\->! } cmd(qq{$git_command branch -r})
 }
 
 sub get_existing_backups
