@@ -1,7 +1,7 @@
 git-incremental-backup
 ======================
 
-Incremental backup Git repo to a git bundles, include all branches
+Incremental backup Git repo to a git bundles, including all branches.
 
 
-## Alpha version. But seems it work (there are tests).
+## Alpha version yet. But seems it works (there are tests).
