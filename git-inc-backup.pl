@@ -33,18 +33,24 @@ if ($command eq 'backup') {
 
 	my @existing = get_existing_backups();
 	if (@existing) {
+		$existing[-1] =~ /\_(\d+).bundle$/;
+		my ($old_filename, $new_filename) = map { sprintf("%s%s_%04d.bundle", $backupdir, $name, $_) } ($1, $1 + 1);
+		cmd(qq{$git_command remote add $remote_name $old_filename});
+		
 		cmd(qq{$git_command fetch $remote_name});
 		my $refs = join(" ", get_local_branches(), map { "^$_" } get_remote_branches());
 		
-		$existing[-1] =~ /\_(\d+).bundle$/;
-		my $new_filename = sprintf("%s%s_%04d.bundle", $backupdir, $name, $1 + 1);
 		cmd(qq{$git_command bundle create $new_filename $refs});
-		#TODO: replace remote
+		
+		cmd($git_command, qq{bundle}, qq{create},
+			sprintf("%s%s_%04d.bundle", $backupdir, $name, map { $1 + 1 } (sort glob($backupdir.$name."_*.bundle"))[-1] =~ /\_(\d+).bundle$/),
+			map { /^[\s\*]*(.*)$/; $1 } cmd($git_command, qq{branch}),
+			map { "^$_" } map { /^\s*(.*)$/; $1 } cmd($git_command, qq{branch -r}));
+		cmd(qq{$git_command remote rm $remote_name});
 	} else {
 		print "FIRST\n";
 		my $new_filename = sprintf("%s%s_%04d.bundle", $backupdir, $name, 1);
 		cmd(qq{$git_command bundle create $new_filename --all});
-		cmd(qq{$git_command remote add $remote_name $new_filename});
 	}
 	
 } elsif ($command eq 'restore') {
