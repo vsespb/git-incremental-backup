@@ -73,6 +73,7 @@ if ($command eq 'backup') {
 					cmd(qq{git --git-dir ${gitdir}.git pull $remote_name $_});
 				}
 			};
+			cmd(qq{git --git-dir ${gitdir}.git remote rm $remote_name});
 		}
 	}
 }
